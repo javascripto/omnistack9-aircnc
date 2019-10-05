@@ -1,31 +1,22 @@
+const multer = require('multer');
 const { Router } = require('express');
+const uploadConfig = require('./config/upload');
+const { IndexController, SessionController } = require('./controllers');
+const { SpotController, DashboardController, BookingController } = require('./controllers');
+
+const upload = multer(uploadConfig);
 
 const routes = Router();
 
-// GET, POST, PUT, DELETE
-routes.get('/', (req, res) => {
-    const { protocol, headers: { host} } = req;
-    return res.json({
-        users: `${protocol}://${host}/users`,
-        query: `${protocol}://${host}/users?id=1`,
-        params: `${protocol}://${host}/users/1`,
-    });
+routes
+    .get('/', IndexController.index)
+    .get('/health', IndexController.health);
 
-});
-
-// req.query = Acessar query params. (Filtros)
-routes.get('/users', (req, res) => res.json({
-    id: ~~(req.query.id || 1),
-    nome: 'fulano'
-}));
-
-// req.body = Acessar corpo da requisição. (precisa usar o middleware express.json())
-routes.post('/users', (req, res) => res.json(req.body));
-
-// req.params = Acessar route params.
-routes.get('/users/:id', (req, res) => res.json({
-    id: ~~req.params.id,
-    nome: 'fulano'
-}));
+routes
+    .post('/sessions', SessionController.store)
+    .get('/spots', SpotController.index)
+    .post('/spots', upload.single('thumbnail'), SpotController.store)
+    .get('/dashboard', DashboardController.show)
+    .post('/spots/:spot_id/bookings', BookingController.store);
 
 module.exports = routes;
