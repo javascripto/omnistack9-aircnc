@@ -4,7 +4,7 @@ class SpotController {
     async index(req, res) {
         const { tech } = req.query;
 
-        const spots = await Spot.find({ techs: tech });
+        const spots = await Spot.find(tech ? { techs: tech } : {});
 
         return res.json(spots);
     }
