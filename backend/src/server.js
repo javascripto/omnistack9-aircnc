@@ -1,11 +1,9 @@
-const path = require('path');
-const dotenv = require('dotenv');
+require('./config/environment');
+
 const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes');
 
-
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const app = express();
 
