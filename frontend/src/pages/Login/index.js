@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import api from '../../services/api';
 
 
-export default function Login() {
+export default function Login({ history }) {
   const [ email, setEmail ] = useState('');
 
   const onChangeEmail = event => setEmail(event.target.value);
@@ -12,6 +12,7 @@ export default function Login() {
     event.preventDefault();
     const response = await api.post('/sessions', { email });
     localStorage.setItem('user', response.data._id);
+    history.push('/dashboard');
   }
 
   return (
