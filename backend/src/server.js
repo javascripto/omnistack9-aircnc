@@ -1,6 +1,7 @@
 require('./config/environment');
 
 const cors = require('cors');
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./router');
@@ -14,6 +15,7 @@ mongoose.connect(process.env.MONGO_CONNECTION, {
 
 app.use(cors());
 app.use(express.json());
+app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use(router);
 
 
